@@ -83,6 +83,8 @@ def play_blackjack(count):
     global bank
     #global count
     #global playerwins
+
+    tie = False
     
     if count == 0:
         bank_value()
@@ -108,14 +110,11 @@ def play_blackjack(count):
         if calculate_hand_value(player_hand) == 21:
             print("\nPlayer has Blackjack! Player wins!")
             playerwins = True
-            tie = False
-            #print("Player wins! They won: ", str(bet), "making their bank:", str(bank))
             break
         elif calculate_hand_value(dealer_hand) == 21:
             display_full_dealers_hand(dealer_hand)
             print("\nDealer has Blackjack! Dealer wins!")
             playerwins = False
-            tie = False
             break
         
         # Player's turn
@@ -126,7 +125,6 @@ def play_blackjack(count):
                 display_table(player_hand, dealer_hand)
                 print("Player busts! Dealer wins!")
                 playerwins = False
-                tie = False
                 break
         elif action == 'stand':
             # Dealer's turns
@@ -138,23 +136,14 @@ def play_blackjack(count):
             if calculate_hand_value(dealer_hand) > 21:
                 display_full_dealers_hand(dealer_hand)
                 playerwins = True
-                tie = False
-                #bank = bank + bet
-                #print("Dealer busts! Player wins! They won: ", str(bet), "making their bank:", str(bank))
             elif calculate_hand_value(player_hand) > calculate_hand_value(dealer_hand):
                 display_full_dealers_hand(dealer_hand)
                 playerwins = True
-                tie = False
-                #bank = bank + bet
-                #print("Player wins! They won: ", str(bet), "making their bank:", str(bank))
             elif calculate_hand_value(player_hand) < calculate_hand_value(dealer_hand):
                 display_full_dealers_hand(dealer_hand)
                 playerwins = False
-                tie = False
-                #print("Dealer wins!")
             else:
                 display_full_dealers_hand(dealer_hand)              
-                #print("It's a tie! No money is gain or lost. Bank is: ", bank)
                 tie = True
                 playerwins = True
             
