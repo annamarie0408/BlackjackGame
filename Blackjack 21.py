@@ -9,6 +9,7 @@ bank = 0
 bet = 0
 count = 0
 playerwins = False
+tie = False
 
 # Define functions for gameplay
 def bank_value():
@@ -26,7 +27,6 @@ def bank_value():
 
 
 def request_wager():
-    global bank
     global bet
     print("\nYour bank is: ", bank)
     bet = input("How much do you want to bet? ")
@@ -79,10 +79,10 @@ def display_full_dealers_hand(dealer_hand):
     print("Dealer's Hand:", ', '.join(dealer_hand), "Value:", calculate_hand_value(dealer_hand))
 
 
-def play_blackjack():
+def play_blackjack(count):
     global bank
-    global count
-    global playerwins
+    #global count
+    #global playerwins
     
     if count == 0:
         bank_value()
@@ -108,12 +108,14 @@ def play_blackjack():
         if calculate_hand_value(player_hand) == 21:
             print("\nPlayer has Blackjack! Player wins!")
             playerwins = True
+            tie = False
             #print("Player wins! They won: ", str(bet), "making their bank:", str(bank))
             break
         elif calculate_hand_value(dealer_hand) == 21:
             display_full_dealers_hand(dealer_hand)
             print("\nDealer has Blackjack! Dealer wins!")
             playerwins = False
+            tie = False
             break
         
         # Player's turn
@@ -124,6 +126,7 @@ def play_blackjack():
                 display_table(player_hand, dealer_hand)
                 print("Player busts! Dealer wins!")
                 playerwins = False
+                tie = False
                 break
         elif action == 'stand':
             # Dealer's turns
@@ -135,32 +138,40 @@ def play_blackjack():
             if calculate_hand_value(dealer_hand) > 21:
                 display_full_dealers_hand(dealer_hand)
                 playerwins = True
+                tie = False
                 #bank = bank + bet
                 #print("Dealer busts! Player wins! They won: ", str(bet), "making their bank:", str(bank))
             elif calculate_hand_value(player_hand) > calculate_hand_value(dealer_hand):
                 display_full_dealers_hand(dealer_hand)
                 playerwins = True
+                tie = False
                 #bank = bank + bet
                 #print("Player wins! They won: ", str(bet), "making their bank:", str(bank))
             elif calculate_hand_value(player_hand) < calculate_hand_value(dealer_hand):
                 display_full_dealers_hand(dealer_hand)
                 playerwins = False
+                tie = False
                 #print("Dealer wins!")
             else:
-                display_full_dealers_hand(dealer_hand)
-                playerwins = False
-                print("It's a tie!")
+                display_full_dealers_hand(dealer_hand)              
+                #print("It's a tie! No money is gain or lost. Bank is: ", bank)
+                tie = True
+                playerwins = True
             
             break
         else:
             print("Invalid input. Please enter 'hit' or 'stand'")
 
-    if playerwins == True:
+    if playerwins == True and tie == False:
         bank = bank + bet
         print("\nThe Player won! Their total bank is: ", str(bank))
-    elif playerwins == False:
+    elif playerwins == False and tie == False:
         bank = bank - int(bet)
         print("\nThe player lost, their bank is: ", str(bank))
+    elif playerwins == True and tie == True:
+        print("It's a tie! No money is gain or lost. Bank is: ", bank)
+        
+    
     
     count+=1
 
@@ -168,7 +179,7 @@ def play_blackjack():
         print("\nGame over, please come back when you have $$")
         exit
     elif bank > 0:
-        play_blackjack()
+        play_blackjack(count)
 
                   
-play_blackjack()
+play_blackjack(count)
