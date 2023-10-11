@@ -81,6 +81,7 @@ def display_full_dealers_hand(dealer_hand):
 
 def play_blackjack(count):
     global bank
+    global bet
     #global count
     #global playerwins
 
@@ -110,6 +111,7 @@ def play_blackjack(count):
         if calculate_hand_value(player_hand) == 21:
             print("\nPlayer has Blackjack! Player wins!")
             playerwins = True
+            bet = bet * 1.5 #If the player gets BlackJack, they win 1.5 the amount of their bet
             break
         elif calculate_hand_value(dealer_hand) == 21:
             display_full_dealers_hand(dealer_hand)
